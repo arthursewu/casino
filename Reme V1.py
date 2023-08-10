@@ -3,7 +3,6 @@ import time
 
 a = 4
 b = -5
-global player_money
 player_money = 1000
 player_count = list()
 house_count = list()
@@ -140,6 +139,7 @@ def blackjack_hit():
 
 def blackjack_bust():
     global player_value
+    player_value = 0
     for i in player_hand:
         match i:
             case "2 ♠️" | "2 ♥" | "2 ♣️" | "2 ♦️":
@@ -194,7 +194,7 @@ def blackjack_ask():
 def blackjack_stand():
     global house_value
     try:
-        print( f"House Hand : {house_hand[0]}, {house_hand[1]}", {house_hand[2]})
+        print( f"House Hand : {house_hand[0]}, {house_hand[1]}, {house_hand[2]}")
     except:
         print( f"House Hand : {house_hand[0]}, {house_hand[1]}",)
     house_value = 0
@@ -238,15 +238,29 @@ def blackjack_house():
         blackjack_final()
 
 def blackjack_final():
-    if house_value > 21 or player_value > house_value:
+    global bet
+    global player_money
+    global house_value
+    global player_value
+    global player_count
+    global player_hand
+    global house_count
+    global house_hand
+    if house_value > 21:
         print("You Win")
         player_money = player_money + bet * 2
+    elif house_value > player_value :
+        print("Lost")
     elif house_value == player_value:
         print("Draw")
-    else:
-        print("You Lost")
+        player_money = player_money + bet
+    elif player_value > house_value:
+        print("You Win")
+        player_money = player_money + bet * 2
+    blackjack()
 
 def blackjack():
+    global bet
     global player_money
     global house_hand
     global player_hand
